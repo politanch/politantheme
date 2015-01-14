@@ -1,3 +1,68 @@
+##' Economist color palette (discrete)
+##'
+##'
+##' @param stata Use the palette in the Politan scheme.
+##' @param fill Use the fill palette.
+##' @family colour politan
+##' @export
+##' @examples
+##' library(grid)
+##' 
+##' 
+##' 
+##' 
+##' 
+##' 
+##' 
+##' 
+##' 
+politan_pal <- function(stata=FALSE, fill=TRUE) {
+  colors <- politantheme_data$politan$bg
+  if (fill) {
+    function(n) {
+      if (n == 1) {
+        i <- "brown4"
+      } else if (n == 2) {
+        i <- c("brown4", "coral3")
+      } else if (n == 3) {
+        i <- c("brown4", "coral3", "coral")
+      } else if (n == 3) {
+        i <- c("brown4", "coral3", "coral", "darkslategray3")
+      } else if (n == 3) {
+        i <- c("brown4", "coral3", "coral", "darkslategray3", "darkslategray4")
+      } else if (n == 3) {
+        i <- c("brown4", "coral3", "coral", "darkslategray3", "darkslategray4", "darkslategray")
+      }
+      unname(colors[i][seq_len(n)])
+    }
+  }
+}
+        
+##' Politan color scales
+##'
+##' Color scales using the colors in the Economist graphics.
+##'
+##' @inheritParams ggplot2::scale_colour_hue
+##' @inheritParams economist_pal
+##' @family colour economist
+##' @rdname scale_economist
+##' @seealso \code{\link{theme_economist}} for examples.
+##' @export
+scale_colour_economist <- function(stata=FALSE, ...) {
+  discrete_scale("colour", "economist", politan_pal(stata=stata), ...)
+}
+##' @rdname scale_politan
+##' @export
+scale_color_economist <- scale_colour_economist
+##' @rdname scale_politan
+##' @export
+scale_fill_economist <- function(stata=FALSE, ...) {
+  discrete_scale("fill", "economist", economist_pal(stata=stata), ...)
+}
+        
+  
+  
+
 theme_politan<- function(base_size = 12, base_family = "CM Roman") {
   
   
@@ -30,7 +95,7 @@ theme_politan<- function(base_size = 12, base_family = "CM Roman") {
         
         legend.background =  element_rect(colour = NA),
         legend.margin =      unit(0.2, "cm"),
-        legend.key =         element_rect(fill = "grey95", colour = "white"),
+        legend.key =         element_rect(fill = NA, colour = NA),
         legend.key.size =    unit(1.2, "lines"),
         legend.key.height =  NULL,
         legend.key.width =   NULL,
