@@ -4,7 +4,7 @@
 
   
 
-theme_politan<- function(base_size = 12, base_family = "CM Roman") {
+theme_politan<- function(base_size = 12, base_family = "Helvetica") {
   
   
   
