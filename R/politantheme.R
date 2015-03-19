@@ -59,7 +59,7 @@ theme_politan<- function(base_size = 12, base_family = "Helvetica") {
                                         colour = NA,
                                         size = 1,
                                         linetype = "solid"),
-        plot.title =         element_text(size = rel(2),
+        plot.title =         element_text(size = rel(1.5),
                                           hjust = 0,
                                           vjust = 4,
                                           face="bold"),
