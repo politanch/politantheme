@@ -34,7 +34,7 @@ theme_politan<- function(base_size = 12, base_family = "Helvetica") {
         axis.ticks.length =  unit(0.15, "cm"),
         axis.ticks.margin =  unit(0.1, "cm"),
         
-        legend.background =  element_rect(colour = NA),
+        legend.background =  element_blank(),
         legend.margin =      unit(0.2, "cm"),
         legend.key =         element_rect(fill = NA, colour = NA),
         legend.key.size =    unit(1.2, "lines"),
