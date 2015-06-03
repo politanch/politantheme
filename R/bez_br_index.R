@@ -1,12 +1,11 @@
 ##' Politan Color Theme
-#' Calculate mean of measuring like government proposes.
-#' 
+#'  
 #' @param user A username.
 #' @param password A password.
 #' @param dbname Name of Database
 #' @param start Number of ballot 
 #' @param end Number of ballot
-#' @return List of Swiss districts with a value.
+#' @return Returns a List of Swiss districts with a value according to voting with the government.
 #' @examples
 #' bez_br_index(user="Otto", password="Pumuckl", dbname="Test", start=3060, end=3090)
 
