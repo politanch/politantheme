@@ -82,5 +82,6 @@ bez_br_index <- function(user=NULL, password=NULL, dbname=NULL, start=NULL, end=
     bez.index$value[i] <- value
     
   }
+  
   return(bez.index)
 }
