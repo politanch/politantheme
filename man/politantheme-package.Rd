@@ -3,8 +3,8 @@
 \alias{politantheme}
 \docType{package}
 \title{
-What the package does (short line)
-~~ package title ~~
+Package provides a theme and some functions for politan.ch blog
+~~ Politantheme ~~
 }
 \description{
 More about what it does (maybe more than one line)
