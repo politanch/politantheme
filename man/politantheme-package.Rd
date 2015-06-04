@@ -16,11 +16,11 @@ Version: \tab 1.0\cr
 Date: \tab 2015-01-13\cr
 License: \tab What license is it under?\cr
 }
-bez_br_index()
-gamma_mean()
-gamma_mode()
-politantheme_col()
-theme_politan()
+bez_br_index
+gamma_mean
+gamma_mode
+politantheme_col
+theme_politan
 }
 \author{
 Th. W.
