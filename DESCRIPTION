@@ -1,9 +1,9 @@
 Package: politantheme
 Type: Package
-Title: What the package does (short line)
+Title: Provides a theme for the politan.ch blog
 Version: 1.0
 Date: 2015-01-13
-Author: Who wrote it
+Author: Thomas Willi
 Maintainer: Who to complain to <yourfault@somewhere.net>
 Description: More about what it does (maybe more than one line)
 License: What license is it under?
