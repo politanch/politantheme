@@ -2,3 +2,5 @@
 
 export(bez_br_index)
 export(theme_politan)
+export(gamma_mean)
+export(gamma_mode)
