@@ -5,12 +5,14 @@
 ##' @export
 
 
-mean_updater <- function(variance_prior, mean_prior, variance_data, mean_data, n){
-  meanpost <- ((1/variance_prior)*mean_prior + (n/variance_data)*mean_data) / ((1/variance_prior)+(n/variance_data))
+mean_updater <- function (mean_prior, variance_prior, mean_data, variance_data){
+  part1 <- (variance_prior/(variance_prior+variance_data))*mean_data
+  part2 <- (variance_data/(variacne_prior+variance_data))*mean_prior
+  meanpost <- part1+part2
   return(meanpost)
 }
 
-var_updater <- function(variance_prior, variance_data, n){
-  varpred <- variance_data*((variance_prior/variance_data)+ 1/n)
+var_updater <-function (variance_prior, variance_data){
+  varpred <- 1/((1/variance_prior)+(1/variacne_data))
   return(varpred)
 }

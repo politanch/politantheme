@@ -70,7 +70,7 @@ theme_politan<- function(base_size = 12, base_family = "Helvetica") {
         #panel.margin.x =     NULL,
         #panel.margin.y =     NULL,
         
-        strip.background =   element_rect(fill = "grey30", colour = "grey10"),
+        #strip.background =   element_rect(fill = "grey30", colour = "grey10"),
         strip.text.x =       element_text(),
         strip.text.y =       element_text(angle = -90, hjust=0.5),
         
