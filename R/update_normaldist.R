@@ -13,6 +13,6 @@ mean_updater <- function (mean_prior, variance_prior, mean_data, variance_data){
 }
 
 var_updater <-function (variance_prior, variance_data){
-  varpred <- 1/((1/variance_prior)+(1/variacne_data))
+  varpred <- 1/((1/variance_prior)+(1/variance_data))
   return(varpred)
 }
