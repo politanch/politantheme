@@ -7,7 +7,7 @@
 
 mean_updater <- function (mean_prior, variance_prior, mean_data, variance_data){
   part1 <- (variance_prior/(variance_prior+variance_data))*mean_data
-  part2 <- (variance_data/(variacne_prior+variance_data))*mean_prior
+  part2 <- (variance_data/(variance_prior+variance_data))*mean_prior
   meanpost <- part1+part2
   return(meanpost)
 }
