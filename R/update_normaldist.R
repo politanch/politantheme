@@ -16,3 +16,8 @@ var_updater <-function (variance_prior, variance_data){
   varpred <- 1/((1/variance_prior)+(1/variance_data))
   return(varpred)
 }
+
+completeFun <- function(data, desiredCols) {
+  completeVec <- complete.cases(data[, desiredCols])
+  return(data[completeVec, ])
+}
