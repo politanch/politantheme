@@ -32,7 +32,7 @@ theme_politan<- function(base_size = 12, base_family = "Helvetica") {
         axis.title.x =       element_text(vjust=0),
         axis.title.y =       element_text(angle = 90, vjust=1),
         axis.ticks.length =  unit(0.15, "cm"),
-        axis.ticks.margin =  unit(0.1, "cm"),
+        #axis.ticks.margin =  unit(0.1, "cm"),
         
         legend.background =  element_blank(),
         legend.margin =      unit(0.2, "cm"),
