@@ -66,7 +66,7 @@ theme_politan<- function(base_size = 12, base_family = "Helvetica") {
         
         #plot.margin =        unit(c(1, 1, 0.5, 0.5), "lines"),
         #plot.margin = unit(c(6, 5, 6, 5) * 2, "points"),
-        plot.margin = unit(c(1, 1, 1, 2), "lines"),
+        plot.margin = unit(c(2, 1, 1, 2), "lines"),
         #panel.margin.x =     NULL,
         #panel.margin.y =     NULL,
         
