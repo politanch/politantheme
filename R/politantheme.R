@@ -60,13 +60,13 @@ theme_politan<- function(base_size = 12, base_family = "Helvetica") {
                                         size = 1,
                                         linetype = "solid"),
         plot.title =         element_text(size = rel(1.5),
-                                          hjust = 1,
-                                          vjust = 4,
+                                          hjust = 0,
+                                          vjust = 3,
                                           face="bold"),
         
         #plot.margin =        unit(c(1, 1, 0.5, 0.5), "lines"),
         #plot.margin = unit(c(6, 5, 6, 5) * 2, "points"),
-        plot.margin = unit(c(1, 1, 2, 2), "lines"),
+        plot.margin = unit(c(1, 1, 2, 1), "lines"),
         #panel.margin.x =     NULL,
         #panel.margin.y =     NULL,
         
