@@ -62,7 +62,7 @@ theme_politan<- function(base_size = 12, base_family = "Helvetica") {
         plot.title =         element_text(family = base_family,
                                           size = rel(1.5),
                                           hjust = 0,
-                                          vjust = 0.5,
+                                          #vjust = 0.5,
                                           face="bold"),
         
         #plot.margin =        unit(c(1, 1, 0.5, 0.5), "lines"),
