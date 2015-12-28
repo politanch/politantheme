@@ -45,8 +45,7 @@ maps_col <- function(x){
 party_col <- function(party=NULL, scheme=NULL){
   
   partycol <- data.frame(Partei=c("SVP", "FDP", "CVP", "SP", "EVP", "GPS", "BDP", "glp"),
-                         light=c("#2E9E64", "#6D86B1", "#F8B062", "#EC5962", "#FAE55E", "#A8CE83", "#E2C855", "#D5DB5A"),
-                         normal=c("#008640", "#48689D", "#F69B43", "#E82E3B", "#F8DE4F", "#92C266", "#DABA41", "#CAD249"))
+                         normal=c("#148A3C", "#009FDA", "#FF850C", "#ED1C24", "#F8DA00", "#FF448A", "#000000", "#B4DC00"))
   
   if(!is.null(party)) partycol <- subset(partycol, Partei==party)
 
