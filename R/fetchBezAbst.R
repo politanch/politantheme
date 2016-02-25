@@ -7,6 +7,7 @@
 
 
 
+
 fetchBezAbst <- function(user, dbname, pwd, was, from=NULL, to=NULL){
   
   if(!exists("user"))stop("Politan-MySQL-User nicht definiert")
@@ -36,7 +37,7 @@ fetchBezAbst <- function(user, dbname, pwd, was, from=NULL, to=NULL){
   if(was=="ja") was <- "JA"
   if(was=="bet") was <- "BET"
   if(was=="all") was <- "ALLES"
-  if(was=="ALLES"&exists("from")) message("Es wird alles heruntergeladen... Keine Einschränkung, obwohl definiert.")
+  if(was=="ALLES"&&exists("from")) message("Es wird alles heruntergeladen... Keine Einschränkung, obwohl definiert.")
   
   v_db <- dbConnect(MySQL(),
                     user=USER, password=PWD,
