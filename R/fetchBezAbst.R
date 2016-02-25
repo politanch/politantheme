@@ -5,6 +5,8 @@
 ##' @export
 
 
+
+
 fetchBezAbst <- function(user, dbname, pwd, was, from=NULL, to=NULL){
   
   if(!exists("user"))stop("Politan-MySQL-User nicht definiert")
@@ -50,7 +52,7 @@ fetchBezAbst <- function(user, dbname, pwd, was, from=NULL, to=NULL){
   if(was=="ALLES"){
     
     bezirksnummer <- grep("BEZNR", names(all.data))
-    if(exists("FROM")) ja <- ja[,c(bezirksnummer, grep(FROM, names(all.data)):grep(TO, names(all.data)))]
+    if(exists("FROM")) all.data <- all.data[,c(bezirksnummer, grep(FROM, names(all.data)):grep(TO, names(all.data)))]
     
     message("häve fön")
     return(all.data)
@@ -112,3 +114,4 @@ fetchBezAbst <- function(user, dbname, pwd, was, from=NULL, to=NULL){
   
   
 }
+
