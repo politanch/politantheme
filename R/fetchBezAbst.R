@@ -7,8 +7,7 @@
 
 
 
-
-fetchBezAbst <- function(user, dbname, pwd, was, from=NULL, to=NULL){
+fetchBezAbst <- function(user, dbname, pwd, was, vorlagen=NULL){
   
   if(!exists("user"))stop("Politan-MySQL-User nicht definiert")
   if(!exists("dbname"))stop("Politan-Datenbank nicht definiert")
@@ -23,12 +22,18 @@ fetchBezAbst <- function(user, dbname, pwd, was, from=NULL, to=NULL){
   USER <- user
   PWD <- pwd
   DBNAME <- dbname
-  if(exists("from")) {
-    FROM <-from
-    if(exists("to")){
-      TO <- to
-      
-    }else{stop("ENDE BFSNR fehlt")}
+  if(is.null(vorlagen)){
+  }else{
+    
+    
+    if(class(vorlagen)!="numeric") stop("Vorlagen müssen nummerisch sein\n")
+    
+    if(length(vorlagen)>1) {
+      ids <- paste0(vorlagen, collapse="|")
+    }else{ids <- vorlagen}
+    
+    
+    rm(vorlagen)
   }
   
   
@@ -53,10 +58,10 @@ fetchBezAbst <- function(user, dbname, pwd, was, from=NULL, to=NULL){
   if(was=="ALLES"){
     
     bezirksnummer <- grep("BEZNR", names(all.data))
-    if(exists("FROM")) all.data <- all.data[,c(bezirksnummer, grep(FROM, names(all.data)):grep(TO, names(all.data)))]
+    if(exists("ids")) ja <- all.data[,c(bezirksnummer, grep(ids, names(all.data)))]
     
     message("häve fön")
-    return(all.data)
+    return(ja)
   }
   
   if(was=="JA"){
@@ -80,9 +85,9 @@ fetchBezAbst <- function(user, dbname, pwd, was, from=NULL, to=NULL){
       names(umweg) <- vorlagen[i]
       ja <- cbind(ja, umweg)
     }
-    
+    message("ok")
     bezirksnummer <- grep("BEZNR", names(ja))
-    if(exists("FROM")) ja <- ja[,c(bezirksnummer, grep(FROM, names(ja)):grep(TO, names(ja)))]
+    if(exists("ids")) ja <- ja[,c(bezirksnummer, grep(ids, names(ja)))]
     
     
     return(ja)
@@ -106,7 +111,7 @@ fetchBezAbst <- function(user, dbname, pwd, was, from=NULL, to=NULL){
     }
     
     bezirksnummer <- grep("BEZNR", names(ja))
-    if(exists("FROM")) ja <- ja[,c(bezirksnummer, grep(FROM, names(ja)):grep(TO, names(ja)))]
+    if(exists("ids")) ja <- ja[,c(bezirksnummer, grep(ids, names(ja)))]
     
     return(ja)
     
