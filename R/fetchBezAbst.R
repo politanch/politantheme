@@ -25,7 +25,7 @@ fetchBezAbst <- function(user, dbname, pwd, was, vorlagen=NULL){
   if(is.null(vorlagen)){
   }else{
     
-    
+    if(class(vorlagen)=="integer") vorlagen <- as.numeric(vorlagen)
     if(class(vorlagen)!="numeric") stop("Vorlagen müssen nummerisch sein\n")
     
     if(length(vorlagen)>1) {
@@ -50,7 +50,7 @@ fetchBezAbst <- function(user, dbname, pwd, was, vorlagen=NULL){
   message("Successfully connected...")
   
   
-  all.data <- dbSendQuery(v_db, "SELECT * FROM `bez_abst_prov`")
+  all.data <- dbSendQuery(v_db, "SELECT * FROM `bez_abst`")
   all.data <- fetch(all.data, n = -1)
   message("Successfully fetched data...")
   suppressWarnings(dbDisconnect(v_db))
