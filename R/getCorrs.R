@@ -142,7 +142,7 @@ getCorrs <- function(user, dbname, pwd, vorlage, vergleich, level=NULL){
     aa$trulla <- row.names(aa)
     relevant <- aa[,c(grep("trulla", names(aa)), grep(VORLAGE, names(aa)))]
     row.names(relevant) <- NULL
-    relevant2 <- relevant[which(relevant[,2]>=LEVEL),]
+    relevant2 <- relevant[which(abs(relevant[,2])>=LEVEL),]
     
     
     
