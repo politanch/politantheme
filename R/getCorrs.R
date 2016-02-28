@@ -76,7 +76,7 @@ getCorrs <- function(user, dbname, pwd, vorlage, vergleich, level=NULL){
     aa <- as.data.frame(cor(fuer.cor))
     aa$bfsnr <- row.names(aa)
     relevant <- aa[,c(grep("bfsnr", names(aa)), grep(VORLAGE, names(aa)))]
-    relevant <- relevant[which(relevant[,2]>=LEVEL),]
+    relevant <- relevant[which(abs(relevant[,2])>=LEVEL),]
     
     KEY <- suppressWarnings(dbSendQuery(DBVerbindung, "SELECT * FROM `nat_key`;"))
     KEY <- fetch(KEY, n = -1)
