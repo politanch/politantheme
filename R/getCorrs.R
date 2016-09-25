@@ -23,10 +23,14 @@ getCorrs <- function(user, dbname, pwd, vorlage, vergleich, level=NULL){
   }
   
   
-  if("RMySQL" %in% rownames(installed.packages())){library(RMySQL)}else{
-    install.packages("RMySQL")
-    library(RMySQL)
+  oo <- c("RMySQL", "dplyr")
+  o <- oo %in% rownames(installed.packages())
+  if(length(which(o==FALSE))>0){
+    install.packages(oo[which(o==FALSE)])
   }
+  library(RMySQL)
+  library(tidyr)
+  library(dplyr)
   
   USER <- user
   PWD <- pwd
@@ -47,42 +51,71 @@ getCorrs <- function(user, dbname, pwd, vorlage, vergleich, level=NULL){
   
   
   if(vergleich=="abstimmungen"){
-    all.abst <- dbSendQuery(DBVerbindung, "SELECT * FROM `bez_abst_prov`;")
-    all.abst <- fetch(all.abst, n = -1)
+    abst <- dbSendQuery(DBVerbindung, "SELECT * FROM `bez_abst_prov`;") %>%
+      fetch(n = -1)
     
-    yes <- all.abst[,grep("YES|NO|VAL", names(all.abst))]
-    vorlagen <- gsub("[[:alpha:]]", "", names(yes))
-    vorlagen <- gsub("[[:punct:]]", "", vorlagen)
-    vorlagen <- unique(vorlagen)
-    
-    ja <- data.frame(BEZNR=all.abst$BEZNR)
-    
-    for(i in 1:length(vorlagen)){
-      tt <- all.abst[, grep(vorlagen[i], names(all.abst))]
-      
-      #Ja-Stimmenanteil
-      if(vorlagen[i]!=5521|vorlagen[i]!=5522){
-        umweg <- (tt[,grep("YES", names(tt))]/tt[,grep("VAL", names(tt))])*100
-      }else{
-        umweg <- (tt[,grep("YES", names(tt))]/(tt[,grep("YES", names(tt))]+tt[,grep("NO", names(tt))]))*100
+    perc <- grep("PERC", names(abst))
+    if(length(perc)!=0){
+      #wenn keine prozente vorhanden sind in bez_abst_prov, müssen diese berechnet werden
+      yes <- abst[,grep("YES|NO|VAL", names(abst))]
+      vorlagen <- gsub("[[:alpha:]]", "", names(yes))
+      vorlagen <- gsub("[[:punct:]]", "", vorlagen)
+      vorlagen <- unique(vorlagen)
+      ja <- data.frame(BEZNR=abst$BEZNR)
+      for(i in 1:length(vorlagen)){
+        tt <- abst[, grep(vorlagen[i], names(abst))]
+        
+        #Ja-Stimmenanteil
+        if(vorlagen[i]!=5521|vorlagen[i]!=5522){
+          umweg <- (tt[,grep("YES", names(tt))]/tt[,grep("VAL", names(tt))])*100
+        }else{
+          umweg <- (tt[,grep("YES", names(tt))]/(tt[,grep("YES", names(tt))]+tt[,grep("NO", names(tt))]))*100
+        }
+        
+        umweg <- data.frame(umweg=umweg)
+        names(umweg) <- vorlagen[i]
+        ja <- cbind(ja, umweg)
       }
+    }else{
+      ja <- abst[,grep(VORLAGE, names(abst))]
+      ja <- ja[,grep("PERC", names(ja))]
+      ja <- cbind(BEZNR=abst[,"BEZNR"], ja) %>%
+        as.data.frame
       
-      umweg <- data.frame(umweg=umweg)
-      names(umweg) <- vorlagen[i]
-      ja <- cbind(ja, umweg)
+      names(ja)[2] <- VORLAGE
+      
     }
     
-    fuer.cor <- ja[,-1]
+    
+    
+    
+    
+    all.abst <- fetchBezAbst(user=USER, pwd=PWD,
+                             dbname=DBNAME, was="ja")
+    
+    
+    
+    fuer.cor <- merge(all.abst, ja, by="BEZNR")
+    
+    fuer.cor <- fuer.cor %>%
+      select(-BEZNR)
+    message("aha")
     aa <- as.data.frame(cor(fuer.cor))
     aa$bfsnr <- row.names(aa)
     relevant <- aa[,c(grep("bfsnr", names(aa)), grep(VORLAGE, names(aa)))]
-    relevant <- relevant[which(abs(relevant[,2])>=LEVEL),]
+    relevant <- relevant[which(relevant[,2]>=LEVEL),]
+    message("aha1")
     
-    KEY <- suppressWarnings(dbSendQuery(DBVerbindung, "SELECT * FROM `nat_key`;"))
-    KEY <- fetch(KEY, n = -1)
+    KEY <- suppressWarnings(dbSendQuery(DBVerbindung, "SELECT * FROM `nat_key`;"))%>%
+      fetch(n = -1)%>%
+      select(-ergebnis, -parlid)
     suppressWarnings(dbDisconnect(DBVerbindung))
     
-    relevant <- cbind(relevant, KEY[which(KEY$bfsnr %in% relevant$bfsnr),])
+    message("aha2")
+    relevant <- merge(relevant, KEY, by="bfsnr")
+    #relevant <- cbind(relevant, KEY[which(KEY$bfsnr %in% relevant$bfsnr),])
+    message("aha3")
+    row.names(relevant) <-  NULL
     for(i in 1:nrow(relevant)){
       print(relevant[i,"bfsnr"])
       Sys.sleep(1)
@@ -97,35 +130,47 @@ getCorrs <- function(user, dbname, pwd, vorlage, vergleich, level=NULL){
   
   
   if(vergleich=="rest"){
-    all.abst <- dbSendQuery(DBVerbindung, "SELECT * FROM `bez_abst_prov`;")
-    all.abst <- fetch(all.abst, n = -1)
+    abst <- dbSendQuery(DBVerbindung, "SELECT * FROM `bez_abst_prov`;") %>%
+      fetch(n = -1)
     
-    yes <- all.abst[,grep("YES|NO|VAL", names(all.abst))]
-    vorlagen <- gsub("[[:alpha:]]", "", names(yes))
-    vorlagen <- gsub("[[:punct:]]", "", vorlagen)
-    vorlagen <- unique(vorlagen)
     
-    ja <- data.frame(BEZNR=all.abst$BEZNR)
-    
-    for(i in 1:length(vorlagen)){
-      tt <- all.abst[, grep(vorlagen[i], names(all.abst))]
-      
-      #Ja-Stimmenanteil
-      if(vorlagen[i]!=5521|vorlagen[i]!=5522){
-        umweg <- (tt[,grep("YES", names(tt))]/tt[,grep("VAL", names(tt))])*100
-      }else{
-        umweg <- (tt[,grep("YES", names(tt))]/(tt[,grep("YES", names(tt))]+tt[,grep("NO", names(tt))]))*100
+    perc <- grep("PERC", names(abst))
+    if(length(perc)!=0){
+      #wenn keine prozente vorhanden sind in bez_abst_prov, müssen diese berechnet werden
+      yes <- abst[,grep("YES|NO|VAL", names(abst))]
+      vorlagen <- gsub("[[:alpha:]]", "", names(yes))
+      vorlagen <- gsub("[[:punct:]]", "", vorlagen)
+      vorlagen <- unique(vorlagen)
+      ja <- data.frame(BEZNR=abst$BEZNR)
+      for(i in 1:length(vorlagen)){
+        tt <- abst[, grep(vorlagen[i], names(abst))]
+        
+        #Ja-Stimmenanteil
+        if(vorlagen[i]!=5521|vorlagen[i]!=5522){
+          umweg <- (tt[,grep("YES", names(tt))]/tt[,grep("VAL", names(tt))])*100
+        }else{
+          umweg <- (tt[,grep("YES", names(tt))]/(tt[,grep("YES", names(tt))]+tt[,grep("NO", names(tt))]))*100
+        }
+        
+        umweg <- data.frame(umweg=umweg)
+        names(umweg) <- vorlagen[i]
+        ja <- cbind(ja, umweg)
       }
+    }else{
+      ja <- abst[,grep(VORLAGE, names(abst))]
+      ja <- ja[,grep("PERC", names(ja))]
+      ja <- cbind(BEZNR=abst[,"BEZNR"], ja) %>%
+        as.data.frame
       
-      umweg <- data.frame(umweg=umweg)
-      names(umweg) <- vorlagen[i]
-      ja <- cbind(ja, umweg)
+      names(ja)[2] <- VORLAGE
+      
     }
+    
     
     referenz <- ja[,c(grep("BEZNR", names(ja)), grep(VORLAGE, names(ja)))]
     
-    all.daten <- suppressWarnings(dbSendQuery(DBVerbindung, "SELECT * FROM `bez_daten`;"))
-    all.daten <- fetch(all.daten, n = -1)
+    all.daten <- suppressWarnings(dbSendQuery(DBVerbindung, "SELECT * FROM `bez_daten`;")) %>%
+      fetch(n = -1)
     suppressWarnings(dbDisconnect(DBVerbindung))
     
     all.daten[] <- suppressWarnings(sapply(all.daten, as.numeric))
@@ -142,7 +187,7 @@ getCorrs <- function(user, dbname, pwd, vorlage, vergleich, level=NULL){
     aa$trulla <- row.names(aa)
     relevant <- aa[,c(grep("trulla", names(aa)), grep(VORLAGE, names(aa)))]
     row.names(relevant) <- NULL
-    relevant2 <- relevant[which(abs(relevant[,2])>=LEVEL),]
+    relevant2 <- relevant[which(relevant[,2]>=LEVEL),]
     
     
     
@@ -150,6 +195,9 @@ getCorrs <- function(user, dbname, pwd, vorlage, vergleich, level=NULL){
     
   }
   
-
+  
+  
+  
   
 }
+
