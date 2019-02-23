@@ -1,9 +1,6 @@
 ##' Politan Color Theme
 ##' @export
 ##' 
-##' Politan Color Theme
-##' @export
-##' 
 
 # generating new theme
 theme_politan <- function(base_size = 12, 
